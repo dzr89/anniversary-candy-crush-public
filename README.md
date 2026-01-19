@@ -154,12 +154,23 @@ Open `caption-editor.html` in your browser for a visual interface to:
 
 This is especially useful when you have many photos and want to see them while writing captions.
 
+### Victory Screen Preview
+
+Open `preview-victory.html` to see exactly how the final victory screen will look:
+- Shows your photo gallery layout with animations
+- Click any photo to see it full-size with its caption
+- Tests the celebration particle effects
+- Reads directly from your `my-config.js` settings
+
+Use this to preview the ending without playing through the entire game.
+
 ## File Structure
 
 ```
 anniversary-candy-crush/
 ├── index.html          # Main game file - open this to play
 ├── caption-editor.html # Helper tool for editing captions
+├── preview-victory.html # Preview the victory screen
 ├── customize/          # YOUR CONTENT GOES HERE
 │   ├── my-config.js    # Your settings and captions
 │   ├── photos/         # Your photos

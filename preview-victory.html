@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victory Screen Preview</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/game.css">
+    <style>
+        /* Override to show victory screen directly */
+        #victory-screen {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Memory Reveal Overlay (for clicking photos) -->
+    <div id="memory-overlay" class="overlay">
+        <div class="memory-content">
+            <div class="memory-photo-container">
+                <img id="memory-photo" src="" alt="Memory Photo">
+            </div>
+            <p id="memory-text" class="memory-text"></p>
+            <button id="memory-close" class="romantic-button">
+                Continue &#10084;
+            </button>
+        </div>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="victory-screen" class="screen active">
+        <div class="victory-content">
+            <h1 class="victory-title">Our Love Story</h1>
+            <p class="victory-subtitle">Every moment with you is a treasure</p>
+            <div id="photo-gallery" class="photo-gallery">
+                <!-- Photos will be populated by JavaScript -->
+            </div>
+            <div class="final-message">
+                <p id="final-message-text">Here's to many more adventures together!</p>
+                <p class="signature">With all my love &#10084;</p>
+            </div>
+            <button id="replay-button" class="romantic-button">
+                Play Again
+            </button>
+        </div>
+    </div>
+
+    <script src="customize/my-config.js"></script>
+    <script>
+        // Load memories from config, or use defaults if not available
+        const memories = (window.CustomConfig?.memories || []).map(m => ({
+            image: 'customize/photos/' + m.photo,
+            text: m.caption
+        }));
+
+        // Update messages from config if available
+        if (window.CustomConfig?.messages) {
+            const msgs = window.CustomConfig.messages;
+            if (msgs.victoryTitle) document.querySelector('.victory-title').textContent = msgs.victoryTitle;
+            if (msgs.victorySubtitle) document.querySelector('.victory-subtitle').textContent = msgs.victorySubtitle;
+            if (msgs.finalMessage) document.getElementById('final-message-text').textContent = msgs.finalMessage;
+            if (msgs.signature) document.querySelector('.signature').innerHTML = msgs.signature + ' &#10084;';
+        }
+
+        // DOM elements
+        const gallery = document.getElementById('photo-gallery');
+        const overlay = document.getElementById('memory-overlay');
+        const photoElement = document.getElementById('memory-photo');
+        const textElement = document.getElementById('memory-text');
+        const closeButton = document.getElementById('memory-close');
+
+        // Populate gallery with staggered animation
+        function populateGallery() {
+            gallery.innerHTML = '';
+
+            memories.forEach((memory, index) => {
+                const img = document.createElement('img');
+                img.src = memory.image;
+                img.alt = memory.text;
+                img.title = 'Click to view: ' + memory.text;
+
+                // Click to show full memory
+                img.addEventListener('click', () => {
+                    photoElement.src = memory.image;
+                    textElement.textContent = memory.text;
+                    overlay.classList.add('active');
+                    overlay.style.opacity = '1';
+                });
+
+                gallery.appendChild(img);
+
+                // Staggered entrance animation
+                setTimeout(() => {
+                    img.classList.add('visible');
+                }, 100 + (index * 80));
+            });
+        }
+
+        // Close overlay
+        closeButton.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.classList.remove('active'), 300);
+        });
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.classList.remove('active'), 300);
+            }
+        });
+
+        // Create celebration effect
+        function createCelebration() {
+            const container = document.getElementById('victory-screen');
+
+            // Add keyframes
+            if (!document.querySelector('#celebration-keyframes')) {
+                const style = document.createElement('style');
+                style.id = 'celebration-keyframes';
+                style.textContent = `
+                    @keyframes burstOut {
+                        0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                        20% { opacity: 1; }
+                        100% { transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--rot)); opacity: 0; }
+                    }
+                    @keyframes floatDown {
+                        0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.9; }
+                        25% { transform: translateY(25vh) rotate(var(--sway1)) scale(0.95); }
+                        50% { transform: translateY(50vh) rotate(var(--sway2)) scale(0.9); }
+                        75% { transform: translateY(75vh) rotate(var(--sway3)) scale(0.85); }
+                        100% { transform: translateY(110vh) rotate(var(--rot)) scale(0.8); opacity: 0; }
+                    }
+                    @keyframes screenFlash {
+                        0% { opacity: 0; }
+                        15% { opacity: 0.3; }
+                        100% { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Screen flash
+            const flash = document.createElement('div');
+            flash.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(216,191,216,0.4) 50%, transparent 70%);
+                pointer-events: none; z-index: 1002;
+                animation: screenFlash 0.6s ease-out forwards;
+            `;
+            container.appendChild(flash);
+            setTimeout(() => flash.remove(), 600);
+
+            // Particles
+            const particles = ['💕', '💖', '💗', '✨', '💫', '🌸', '💝', '♥'];
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            // Burst from center
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+                const angle = (Math.PI * 2 * i) / 25 + (Math.random() * 0.3);
+                const distance = 150 + Math.random() * 300;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                particle.style.cssText = `
+                    position: fixed; left: ${centerX}px; top: ${centerY}px;
+                    font-size: ${24 + Math.random() * 20}px; z-index: 1001; pointer-events: none;
+                    --tx: ${tx}px; --ty: ${ty}px; --rot: ${-180 + Math.random() * 360}deg;
+                    animation: burstOut ${0.8 + Math.random() * 0.4}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+                    animation-delay: ${i * 15}ms;
+                `;
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+
+            // Falling particles
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+                    const swayAmount = 15 + Math.random() * 30;
+                    const sway1 = (Math.random() > 0.5 ? 1 : -1) * swayAmount;
+                    particle.style.cssText = `
+                        position: fixed; left: ${Math.random() * 100}vw; top: -50px;
+                        font-size: ${18 + Math.random() * 24}px; z-index: 1001; pointer-events: none;
+                        --sway1: ${sway1}deg; --sway2: ${-sway1 * 0.7}deg; --sway3: ${sway1 * 0.5}deg;
+                        --rot: ${-180 + Math.random() * 360}deg;
+                        animation: floatDown ${4 + Math.random() * 3}s ease-in-out forwards;
+                    `;
+                    container.appendChild(particle);
+                    setTimeout(() => particle.remove(), 7000);
+                }, 200 + i * 100);
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            populateGallery();
+            createCelebration();
+        });
+
+        // Replay button triggers celebration again
+        document.getElementById('replay-button').addEventListener('click', () => {
+            // Reset photos
+            document.querySelectorAll('.photo-gallery img').forEach(img => {
+                img.classList.remove('visible');
+            });
+            // Re-animate
+            setTimeout(() => {
+                populateGallery();
+                createCelebration();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
