@@ -143,11 +143,23 @@ const myPassword = {
 - Open the browser console (F12) to check for errors
 - Make sure you didn't accidentally delete a comma in my-config.js
 
+## Helper Tools
+
+### Caption Editor
+
+Open `caption-editor.html` in your browser for a visual interface to:
+- Preview your photos with their captions
+- Edit all game messages in one place
+- Generate configuration that you can copy into `my-config.js`
+
+This is especially useful when you have many photos and want to see them while writing captions.
+
 ## File Structure
 
 ```
 anniversary-candy-crush/
 ├── index.html          # Main game file - open this to play
+├── caption-editor.html # Helper tool for editing captions
 ├── customize/          # YOUR CONTENT GOES HERE
 │   ├── my-config.js    # Your settings and captions
 │   ├── photos/         # Your photos
