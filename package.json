@@ -1,0 +1,55 @@
+{
+  "name": "anniversary-candy-crush",
+  "version": "1.0.0",
+  "description": "A romantic, customizable match-3 puzzle game for special occasions",
+  "main": "js/game.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "lint": "eslint js/ content.js --ext .js",
+    "lint:fix": "eslint js/ content.js --ext .js --fix"
+  },
+  "keywords": [
+    "game",
+    "candy-crush",
+    "match-3",
+    "anniversary",
+    "romantic"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "eslint": "^8.57.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "content.js",
+      "!**/node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    },
+    "moduleDirectories": [
+      "node_modules",
+      "js"
+    ],
+    "verbose": true
+  }
+}

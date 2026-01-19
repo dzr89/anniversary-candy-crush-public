@@ -1,0 +1,53 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "script"
+  },
+  "globals": {
+    "Game": "writable",
+    "Grid": "writable",
+    "MatchDetector": "writable",
+    "Animations": "writable",
+    "MemorySystem": "writable",
+    "AudioManager": "writable",
+    "Utils": "writable",
+    "CustomConfig": "readonly",
+    "gameConfig": "writable",
+    "memories": "writable"
+  },
+  "rules": {
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-console": ["warn", { "allow": ["warn", "error", "debug"] }],
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-new-func": "error",
+    "no-script-url": "error",
+    "no-proto": "error",
+    "no-extend-native": "error",
+    "no-caller": "error",
+    "no-iterator": "error",
+    "no-labels": "error",
+    "no-with": "error",
+    "no-throw-literal": "error",
+    "prefer-const": "warn",
+    "no-var": "warn",
+    "curly": ["warn", "multi-line"],
+    "default-case": "warn",
+    "dot-notation": "warn",
+    "no-empty-function": "warn",
+    "no-floating-decimal": "warn",
+    "no-multi-spaces": "warn",
+    "no-return-assign": "error",
+    "no-self-compare": "error",
+    "no-useless-concat": "warn",
+    "no-useless-return": "warn",
+    "yoda": "warn"
+  }
+}
